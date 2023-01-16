@@ -14,7 +14,7 @@ body {
 }
 
 .header-dashboard {
-    display: block;
+    display: flex;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -27,6 +27,11 @@ body {
     text-align: center;
     justify-content: center;
     align-items: center;
+    background-color: beige;
+    width: 100%;
+    max-width: 420px;
+    padding: 2em;
+   border-radius: 30px;
 }
 
 .five-day-forecast {
