@@ -14,33 +14,48 @@
     </header>
 
 <main>
-    <section class="current-weather">
-        <h2>CURRENT WEATHER</h2>
-        <h4 id="city">Weather in Durham</h4>
-        <div id="tempValue">Temp Value</div>
-        <img src="" alt="" class="icon">
-        <div id="climateDescription">What's it look like outside?</div>
-        <div id="humidity">How humid is it?</div>
-        <div id="windSpeed">What's the wind speed?</div>
-    </section>
     <aside class="search-bar previously-searched btn">
         <div class="search">
             <h3>SEARCH BAR</h3>
             <input type="search" name="searchbar" id="search-bar" placeholder="Durham, NC">
             <button id="search-btn">Search</button>
         </div>
-        <div class="five-day-forecast">
-            <h2>PREVIOUSLY SEARCHED CITIES</h2>
+        <h2>PREVIOUSLY SEARCHED CITIES</h2>
+        <div class="history">
         </div>
     </aside>
-    <section>
+
+    <section class="current-weather">
+        <!-- <h2>CURRENT WEATHER</h2>
+        <h4 id="city">Weather in Durham</h4>
+        <div id="tempValue">Temp Value</div>
+        <img src="" alt="" class="icon">
+        <div id="climateDescription">What's it look like outside?</div>
+        <div id="humidity">How humid is it?</div>
+        <div id="windSpeed">What's the wind speed?</div> -->
+    </section>
+    <section class="five-day-forecast">
         <h2>5-DAY FORECAST</h2>
     </section>
 </main>
 
 
 
-
+<script
+      src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.4/dayjs.min.js"
+      integrity="sha512-0fcCRl828lBlrSCa8QJY51mtNqTcHxabaXVLPgw/jPA5Nutujh6CbTdDgRzl9aSPYW/uuE7c4SffFUQFBAy6lg=="
+      crossorigin="anonymous"
+    ></script>
+    <script 
+      src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.4/plugin/utc.min.js" 
+      integrity="sha512-m00bfmYnAl3plEBlQfeQUhw/U2uvmw29V2+jxSWpAjankMWS+zAsjezbKWDEJNXqWq9o9qQZSOiA2RKDpa4D5w==" 
+      crossorigin="anonymous"
+    ></script>
+    <script 
+      src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.4/plugin/timezone.min.js" 
+      integrity="sha512-pslqxxHAYPCxaSeFSmXXxDkLejD5dbFVC66aiVq0z4v7VTJBU+wqcG1OpNh4p3MjS2D6NCwz/H2QmSc7dXxryg==" 
+      crossorigin="anonymous"
+    ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="./Assets/script.js"></script>
 </body>
