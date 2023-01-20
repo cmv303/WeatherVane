@@ -23,12 +23,24 @@ $(document).ready(function () {
           }
           return response.json();
         })
-        .then(function(data) {
-          console.log(data);
-        })
+        .then(function (data) {
+          displayCurrentWeather(data);
+        }) //!see note about this in notes js files
         .catch(function(error) {
           console.error("Error fetching weather data: " + error);
         });
+    }
+    function displayCurrentWeather(data) {
+      const city = document.getElementById("city");
+      city.innerHTML = data.name; //!only shows using location in console
+      const climateDescription = document.getElementById("climateDescription"); //!Not showing up
+      climateDescription.innerHTML - data.weather[0].main;
+      const tempValue = document.getElementById("tempValue");
+      tempValue.innerHTML = Math.round(data.main.feels_like - 273.15) + " °C"
+      // const humidity = document.getElementById("humidity");
+      // humidity.innerHTML = data.humidity
+      // const windSpeed = document.getElementById("windSpeed");
+      // windSpeed.innerHTML = 
     }
   });
 

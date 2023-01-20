@@ -33,7 +33,9 @@
 
 // fetchCurrentWeather is passed as a callback function from the nav.geolocation() method (as stated in line 16)
 
-
+// .then(function displayCurrentWeather(data) {
+        //   console.log(data);
+        // }) //! Why can it not be written this way?
 
 //  fetchFiveDayWeather();
 
