@@ -35,7 +35,7 @@ search.addEventListener("click", (event) => {
       console.log(data.message);
     } else {
         date;
-      temp.innerHTML = Math.round((parseFloat(data.main.temp))) + " °C";
+      temp.innerHTML = Math.round((parseFloat(data.main.temp))) + " °F";
       humidity.innerHTML = data.main.humidity + " % humidity";
       windSpeed.inerHTML = data.wind.speed + "mph";
       weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png">`;
