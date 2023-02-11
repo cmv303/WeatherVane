@@ -9,8 +9,12 @@
 }
 
 body {
-    background-color: bisque;
-    color: dimgrey;
+    background-color: #094479;
+    color: #8e7578;
+}
+
+label {
+    font-weight: bold;
 }
 
 .header-dashboard {
@@ -22,7 +26,8 @@ body {
     margin: 10px;
 }
 
-.currentWeather-outputs {
+.currentWeather-outputs,
+.fiveDay {
     display: block;
     text-align: center;
     justify-content: center;
@@ -32,11 +37,20 @@ body {
     max-width: 420px;
     padding: 2em;
    border-radius: 30px;
+   margin: 0 auto;
 }
 
-.five-day-forecast {
-    display: block;
+.searchHistory {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px;
+    gap: 1rem;
+}
+
+h2 {
     text-align: center;
-    justify-content: center;
-    align-items: center;
+}
+
+h3 {
+    margin: 22px;
 }
