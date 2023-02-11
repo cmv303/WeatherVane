@@ -15,7 +15,7 @@ search.addEventListener("click", (event) => {
   console.log("button clicked!")
   event.preventDefault();
   let city = inputs[0].value;
-  console.log("CITY!", city);
+  console.log("CITY!", city); //! City comes back as undefined
   const currentData = `${rootURL}/data/2.5/weather?q=${city}&limit=5&appid=${apiKey}`;
   console.log("Button clicked!", currentData);
   //Use fetch to get the current weather data from the openweathermap api
@@ -27,7 +27,7 @@ search.addEventListener("click", (event) => {
         saveSearchHistory(data);
         console.log("data", data);
       } else {
-        console.log(data.message);
+        console.log(data.message); //! console says this is a bad query
       }
     });
 });
