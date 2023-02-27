@@ -12,12 +12,13 @@ let weatherIcon = document.getElementById("weatherIcon");
 
 //Add event listener to search button
 search.addEventListener("click", (event) => {
-  console.log("button clicked!")
+  console.log("button clicked!");
   event.preventDefault();
   let city = inputs[0].value;
-  console.log("CITY!", city); //! City comes back as undefined
-  const currentData = `${rootURL}/data/2.5/weather?q=${city}&limit=5&appid=${apiKey}`;
-  console.log("Button clicked!", currentData);
+  console.log("CITY!", city); //! Durham is hardcoded, as City comes back as undefined
+  const currentData = `${rootURL}/data/2.5/weather?q=durham&appid=${apiKey}`;
+  const fiveDayData = `${rootURL}/data/2.5/forecast?q=durham&appid=${apiKey}`;
+  console.log("Button clicked!");
   //Use fetch to get the current weather data from the openweathermap api
   fetch(currentData)
     .then((response) => response.json())
@@ -28,6 +29,16 @@ search.addEventListener("click", (event) => {
         console.log("data", data);
       } else {
         console.log(data.message); //! console says this is a bad query
+      }
+    });
+//use fetch to get 5-day forecast
+    fetch(fiveDayData)
+    .then((response) => response.json())
+    .then((data) => {
+      if(data.cod === 200) {
+        displayFiveDays(data);
+      } else {
+        console.log(data.message);
       }
     });
 });
@@ -47,40 +58,71 @@ function displayCurrent(data) {
     windSpeed.innerHTML = data.wind.speed + "mph";
     weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png">`;
   }
-}
+};
 
 //Define the saveSearchHistory function to save the search history
 function saveSearchHistory(data) {
-  //Get the search results from local storage, or an empty array if they don't exist
-  let searchResults = localStorage.getItem("searchResults") || "[]";
-  //parse search result data as a JavaScript Object using JSON.parse()
-  searchResults = JSON.parse(searchResults);
+  //Get and parse the search results from local storage as a js object using json, , or an empty array if they don't exist
+  let searchResults = JSON.parse(localStorage.getItem("searchResults") || "[]");
   //Add new data to existing data by using push(data)
   searchResults.push(data);
   //store updated data back into local storage
   localStorage.setItem("searchResults", JSON.stringify(searchResults));
   console.log("local storage", searchResults);
-}
+};
+
+function displayFiveDays(data) {
+  if(data.message) {
+    console.log(data.message);
+  } else {
+    let forecastDays = data.list.filter((listItem) =>
+    listItem.dt_txt.includes("12:00:00"));
+    console.log("5 day forecast: ", forecastDays);
+
+    for (let i =0; i < forecastDays.length; i++) {
+      let forecastDays = forecastDays[i]
+      let d = new Date(forecastDays.dt * 1000);
+      let date = d.toDateString();
+    temp.innerHTML = Math.round(parseFloat(forecastDays.main.temp)) + " °F";
+    humidity.innerHTML = forecastDays.main.humidity + " % humidity";
+    windSpeed.innerHTML = forecastDays.wind.speed + "mph";
+    weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${forecastDays.weather[0].icon}@2x.png">`;
+    }
+  }
+};
 
 //display previous search results
 function displayPrevious() {
   const searchHistory = document.getElementsByClassName("searchHistory");
   const searchHistoryBtn = document.getElementsByClassName("searchHistoryBtn");
   const searchHistoryClearBtn =
-    document.getElementsByClassName("clearHistoryBtn");
+    document.getElementsByClassName("clearHistoryBtn")[0];
 
-  for (let i = 0; i < searchResults.length; i++) {
-    searchHistoryBtn.addEventListener("click", function () {
+     //Get and parse the search results from local storage, or an empty array if they don't exist
+  let searchResults = JSON.parse(localStorage.getItem("searchResults") || "[]");
+
+  //add event listener to clear search history button
+  searchHistoryClearBtn.addEventListener("click", function () {
+    localStorage.removeItem("searchResults");
+    searchResults = [];
+    //clear serach history display
+    for (let i = 0; i < searchHistory.length; i++) {
+      searchHistory[i].innerHTML = "";
+    }
+  });
+
+  for (let i = 0; i < searchHistoryBtn.length; i++) {
+    searchHistoryBtn[i].addEventListener("click", function () {
       const searchTerm = searchHistory[i].value;
       searchHistoryClearBtn.innerHTML = "Clear Search History";
       for (let j = 0; j < searchResults.length; j++) {
-        if (searchResults[j].includes(searchTerm)) {
+        if (searchResults[j].name.includes(searchTerm)) {
           const listItem = document.createElement("li");
-          listItem.textContent = searchResults[j];
+          listItem.textContent = searchResults[j].name;
           searchHistory[i].appendChild(listItem);
         }
       }
       displayPrevious();
     });
   }
-}
+};
