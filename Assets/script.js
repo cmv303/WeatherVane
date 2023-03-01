@@ -5,18 +5,20 @@ const inputs = document.getElementById("cityState");
 const currentOutputs = document.getElementsByClassName(
   "currentWeather-outputs"
 );
+const fiveDayForecast = document.getElementsByClassName("fiveDay");
 let temp = document.getElementById("temp");
 let humidity = document.getElementById("humidity");
 let windSpeed = document.getElementById("windSpeed");
 let weatherIcon = document.getElementById("weatherIcon");
+let cityName = document.createElement("h4");
 
 //Add event listener to search button
 search.addEventListener("click", (event) => {
   console.log("button clicked!");
   event.preventDefault();
   let city = inputs.value;
-  console.log("CITY!", city); //! Durham is hardcoded, as City comes back as undefined
-  console.log("inputs", inputs[0]);
+  console.log("CITY!", city); 
+  console.log("inputs", inputs[0]); //! inputs come back as undefined
   const currentData = `${rootURL}/data/2.5/weather?q=${city}&${apiKey}`;
   const fiveDayData = `${rootURL}/data/2.5/forecast?q=${city}&${apiKey}`;
   console.log("Button clicked!");
@@ -29,7 +31,7 @@ search.addEventListener("click", (event) => {
         saveSearchHistory(data);
         console.log("data", data);
       } else {
-        console.log(data.message); //! console says this is a bad query
+        console.log(data.message); 
       }
     });
 //use fetch to get 5-day forecast
@@ -56,6 +58,8 @@ function displayCurrent(data) {
     let d = new Date();
     let date = d.toDateString();
     temp.innerHTML = Math.round(parseFloat(data.main.temp)) + " °F";
+    cityName.textContent = "Current weather for " + data.name;
+    currentOutputs[0].appendChild(cityName);
     humidity.innerHTML = data.main.humidity + " % humidity";
     windSpeed.innerHTML = data.wind.speed + "mph";
     weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png">`;
@@ -82,13 +86,20 @@ function displayFiveDays(data) {
     console.log("5 day forecast: ", forecastDays);
 
     for (let i =0; i < forecastDays.length; i++) {
-      let forecastDay = forecastDays[i]
+      let forecastDay = forecastDays[i];
       let d = new Date(forecastDay.dt * 1000);
       let date = d.toDateString();
-    temp.innerHTML = Math.round(parseFloat(forecastDay.main.temp)) + " °F";
+      temp.innerHTML = Math.round(parseFloat(forecastDay.main.temp)) + " °F";
+      cityName.textContent = "5-day forecast for " + forecastDay.name;
+     fiveDayForecast[0].appendChild(cityName);
     humidity.innerHTML = forecastDay.main.humidity + " % humidity";
     windSpeed.innerHTML = forecastDay.wind.speed + "mph";
     weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${forecastDay.weather[0].icon}@2x.png">`;
+      // Add the new elements to the DOM
+      fiveDayForecast[i + 1].appendChild(temp);
+      fiveDayForecast[i + 1].appendChild(humidity);
+      fiveDayForecast[i + 1].appendChild(windSpeed);
+      fiveDayForecast[i + 1].appendChild(weatherIcon);
     }
   }
 };
