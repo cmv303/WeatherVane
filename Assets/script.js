@@ -1,7 +1,7 @@
 const rootURL = "https://api.openweathermap.org";
-const apiKey = "1dbbe04e7eaff33cabdcdc99e3464ff7&units=imperial";
+const apiKey = "appid=1dbbe04e7eaff33cabdcdc99e3464ff7&units=imperial";
 const search = document.getElementById("searchForWeather");
-const inputs = document.getElementsByClassName("inputs");
+const inputs = document.getElementById("cityState");
 const currentOutputs = document.getElementsByClassName(
   "currentWeather-outputs"
 );
@@ -14,10 +14,11 @@ let weatherIcon = document.getElementById("weatherIcon");
 search.addEventListener("click", (event) => {
   console.log("button clicked!");
   event.preventDefault();
-  let city = inputs[0].value;
+  let city = inputs.value;
   console.log("CITY!", city); //! Durham is hardcoded, as City comes back as undefined
-  const currentData = `${rootURL}/data/2.5/weather?q=durham&appid=${apiKey}`;
-  const fiveDayData = `${rootURL}/data/2.5/forecast?q=durham&appid=${apiKey}`;
+  console.log("inputs", inputs[0]);
+  const currentData = `${rootURL}/data/2.5/weather?q=${city}&${apiKey}`;
+  const fiveDayData = `${rootURL}/data/2.5/forecast?q=${city}&${apiKey}`;
   console.log("Button clicked!");
   //Use fetch to get the current weather data from the openweathermap api
   fetch(currentData)
@@ -37,6 +38,7 @@ search.addEventListener("click", (event) => {
     .then((data) => {
       if(data.cod === 200) {
         displayFiveDays(data);
+        console.log("data5", data);
       } else {
         console.log(data.message);
       }
@@ -80,13 +82,13 @@ function displayFiveDays(data) {
     console.log("5 day forecast: ", forecastDays);
 
     for (let i =0; i < forecastDays.length; i++) {
-      let forecastDays = forecastDays[i]
-      let d = new Date(forecastDays.dt * 1000);
+      let forecastDay = forecastDays[i]
+      let d = new Date(forecastDay.dt * 1000);
       let date = d.toDateString();
-    temp.innerHTML = Math.round(parseFloat(forecastDays.main.temp)) + " °F";
-    humidity.innerHTML = forecastDays.main.humidity + " % humidity";
-    windSpeed.innerHTML = forecastDays.wind.speed + "mph";
-    weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${forecastDays.weather[0].icon}@2x.png">`;
+    temp.innerHTML = Math.round(parseFloat(forecastDay.main.temp)) + " °F";
+    humidity.innerHTML = forecastDay.main.humidity + " % humidity";
+    windSpeed.innerHTML = forecastDay.wind.speed + "mph";
+    weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${forecastDay.weather[0].icon}@2x.png">`;
     }
   }
 };
