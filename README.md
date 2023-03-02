@@ -14,6 +14,7 @@ The dashboard also allows users to view past cities searched
 - event handlers
 
 ## Deployment
+https://cmv303.github.io/WeatherVane/
 
 ## Demo
 <img width="1277" alt="Screenshot 2023-03-02 at 9 46 24 AM" src="https://user-images.githubusercontent.com/115678318/222461871-6a71b1d4-f6c9-48fe-bdd0-156b7c57b7c3.png">
