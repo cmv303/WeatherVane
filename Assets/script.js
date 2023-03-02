@@ -9,7 +9,6 @@ const searchHistory = document.getElementsByClassName("searchHistory")[0];
 const searchHistoryClearBtn =
   document.getElementsByClassName("clearHistoryBtn")[0];
 const searchHistoryBtn = document.getElementsByClassName("searchHistoryBtn")[0];
-
 const fiveDayForecast = document.getElementsByClassName("fiveDay");
 let temp = document.getElementById("temp");
 let humidity = document.getElementById("humidity");
@@ -19,14 +18,10 @@ let cityName = document.createElement("h4");
 
 //Add event listener to search button
 search.addEventListener("click", (event) => {
-  console.log("button clicked!");
   event.preventDefault();
   let city = inputs.value;
-  console.log("CITY!", city);
-  console.log("inputs", inputs[0]); //! inputs come back as undefined
   const currentData = `${rootURL}/data/2.5/weather?q=${city}&${apiKey}`;
   const fiveDayData = `${rootURL}/data/2.5/forecast?q=${city}&${apiKey}`;
-  console.log("Button clicked!");
   //Use fetch to get the current weather data from the openweathermap api
   fetch(currentData)
     .then((response) => response.json())
@@ -34,19 +29,17 @@ search.addEventListener("click", (event) => {
       if (data.cod === 200) {
         displayCurrent(data);
         saveSearchHistory(data);
-        console.log("data", data);
       } else {
         console.log(data.message);
       }
     });
+
   //use fetch to get 5-day forecast
-  console.log("Data data");
   fetch(fiveDayData)
     .then((response) => response.json())
     .then((data) => {
       if (data.cod === "200") {
         displayFiveDays(data);
-        console.log("data5", data);
       } else {
         console.log(data.message);
       }
@@ -67,12 +60,12 @@ function displayCurrent(data) {
     let d = new Date();
     let date = d.toDateString();
     temp.innerHTML = Math.round(parseFloat(data.main.temp)) + " °F";
-    cityName.textContent = "Current weather for " + data.name;
+    cityName.textContent = "Current and 5-day weather forecast";
     currentOutputs[0].appendChild(cityName);
     humidity.innerHTML = data.main.humidity + " % humidity";
     windSpeed.innerHTML = data.wind.speed + "mph";
     weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png">`;
-    const listItem = document.createElement("li");
+    const listItem = document.createElement("ul");
     listItem.textContent = date;
   }
 }
@@ -97,11 +90,6 @@ function displayFiveDays(data) {
       listItem.dt_txt.includes("12:00:00")
     );
 
-    console.log("5 day forecast: ", forecastDays);
-
-    cityName.textContent = "5-day forecast for " + cityName;
-    fiveDayForecast[0].appendChild(cityName);
-
     let fiveDaySection = document.querySelector(".fiveDay");
     for (let i = 0; i < forecastDays.length; i++) {
       let forecastDay = forecastDays[i];
@@ -119,7 +107,7 @@ function displayFiveDays(data) {
       weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${forecastDay.weather[0].icon}@2x.png">`;
 
       // Add the new elements to the DOM
-      const listItem = document.createElement("li");
+      const listItem = document.createElement("ul");
       listItem.textContent = date;
 
       fiveDaySection.appendChild(listItem);
@@ -130,36 +118,13 @@ function displayFiveDays(data) {
     }
   }
 }
-
-//display previous search results
-
-function displayPrevious() {
-  //Get and parse the search results from local storage, or an empty array if they don't exist
-}
-//add event listener to clear search history button
-
-searchHistoryClearBtn.addEventListener("click", function () {
-  localStorage.removeItem("searchResults");
-  searchResults = [];
-  //clear serach history display
-  for (let i = 0; i < searchHistory.length; i++) {
-    searchHistory[i].innerHTML = "";
-  }
-});
-
-// for (let i = 0; i < searchHistoryBtn.length; i++) {
-
+//event listener for Previously Searched Button
 searchHistoryBtn.addEventListener("click", function () {
   console.log("Are you firing?");
-  // const searchTerm = searchHistory.value;
-  searchHistoryClearBtn.innerHTML = "Clear Search History";
   let searchResults = JSON.parse(localStorage.getItem("searchResults") || "[]");
-  for (let j = 0; j < searchResults.length; j++) {
-    // if (searchResults[j].name.includes(searchTerm)) {
-    const listItem = document.createElement("li");
-    listItem.textContent = searchResults[j].name;
+  for (let i = 0; i < searchResults.length; i++) {
+    const listItem = document.createElement("ul");
+    listItem.textContent = searchResults[i].name;
     searchHistory.appendChild(listItem);
-    // }
   }
-  displayPrevious();
 });
